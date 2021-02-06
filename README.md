@@ -1,3 +1,5 @@
+Add helm bitnami repo: `helm repo add bitnami https://charts.bitnami.com/bitnami`
+
 DB install: `helm install db -f helm-postgres/values.yml bitnami/postgresql`
 
 Apply secrets: `kubectl apply -f api-config.yml`
