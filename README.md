@@ -1,4 +1,4 @@
-DB install: `helm install db -f values.yml bitnami/postgresql`
+DB install: `helm install db -f helm-postgres/values.yml bitnami/postgresql`
 
 Apply secrets: `kubectl apply -f api-config.yml`
 

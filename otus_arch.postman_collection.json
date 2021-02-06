@@ -42,7 +42,7 @@
 					"script": {
 						"exec": [
 							"const postRequest = {",
-							"  url: 'http://localhost:8000/user',",
+							"  url: 'http://arch.homework/dz_sianiuk/user',",
 							"  method: 'POST',",
 							"  header: {",
 							"    'Content-Type': 'application/json',",
@@ -94,7 +94,7 @@
 					"script": {
 						"exec": [
 							"const postRequest = {",
-							"  url: 'http://localhost:8000/user',",
+							"  url: 'http://arch.homework/dz_sianiuk/user',",
 							"  method: 'POST',",
 							"  header: {",
 							"    'Content-Type': 'application/json',",
@@ -146,7 +146,7 @@
 					"script": {
 						"exec": [
 							"const postRequest = {",
-							"  url: 'http://localhost:8000/user',",
+							"  url: 'http://arch.homework/dz_sianiuk/user',",
 							"  method: 'POST',",
 							"  header: {",
 							"    'Content-Type': 'application/json',",
