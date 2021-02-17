@@ -1,0 +1,9 @@
+replicas: 3
+host: arch.homework
+
+postgresql:
+  postgresqlUsername: test
+  postgresqlPassword: test
+  postgresqlDatabase: test
+  service:
+    port: "5432"

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-app
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-app
+    spec:
+      initContainers:
+        - name: check-db-ready
+          image: postgres:latest
+          env:
+            - name: POSTGRES_HOST
+              value: {{ include "postgresql.fullname" . | quote }}
+            - name: POSTGRES_PORT
+              value: {{ .Values.postgresql.service.port | quote }}
+          command:
+            - sh
+            - "-c"
+            - |
+              until pg_isready -h $POSTGRES_HOST -p $POSTGRES_PORT;
+              do echo waiting for database; sleep 2; done;
+      containers:
+        - name: {{ .Release.Name }}
+          image: "krapoed/otus_arch:{{ .Chart.AppVersion }}"
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-secret
+          ports:
+             - name: web
+               containerPort: 80
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /health
+            initialDelaySeconds: 5
+            periodSeconds: 5
