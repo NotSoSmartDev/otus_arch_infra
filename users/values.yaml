@@ -1,5 +1,21 @@
-replicas: 3
-host: arch.homework
+replicaCount: 3
+
+image:
+  repository: krapoed/otus_arch
+
+service:
+  type: NodePort
+  port: 9000
+
+ingress:
+  enabled: true
+  hosts:
+    - host: arch.homework
+      paths: ["/dz_sianiuk"]
+
+metrics:
+  serviceMonitor:
+    enabled: true
 
 postgresql:
   postgresqlUsername: test

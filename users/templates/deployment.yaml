@@ -1,16 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-deployment
+  name: {{ include "users-chart.fullname" . }}
+  labels:
+    {{- include "users-chart.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}-app
+      {{- include "users-chart.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}-app
+        {{- include "users-chart.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
     spec:
       initContainers:
         - name: check-db-ready
@@ -27,14 +31,15 @@ spec:
               until pg_isready -h $POSTGRES_HOST -p $POSTGRES_PORT;
               do echo waiting for database; sleep 2; done;
       containers:
-        - name: {{ .Release.Name }}
-          image: "krapoed/otus_arch:{{ .Chart.AppVersion }}"
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository}}:{{ .Chart.AppVersion }}"
           envFrom:
             - secretRef:
-                name: {{ .Release.Name }}-secret
+                name: users-secret
           ports:
-             - name: web
+             - name: http
                containerPort: 80
+               protocol: TCP
           readinessProbe:
             httpGet:
               port: 80
